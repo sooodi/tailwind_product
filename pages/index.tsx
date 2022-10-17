@@ -3,7 +3,13 @@ import Head from "next/head";
 import { Fragment } from "react";
 import styles from "../styles/Home.module.css";
 import useProducts from "../hook/products";
-
+type product={
+  id:number;
+  title:string;
+  description:string;
+  image:string;
+  price:number;
+}
 const Home: NextPage = () => {
   const { isLoading, data, refetch } = useProducts();
   console.log("data", data);
@@ -22,13 +28,13 @@ const Home: NextPage = () => {
           <a href="https://sudytaherpanah.netlify.app/">See My Portfolio!</a>
         </h4>
 
-        {isLoading ? (
+        {(isLoading || !data )? (
           <p className="mt-8 flex  h-full font-bold text-red-300">
             Loading....
           </p>
         ) : (
           <div className="mt-10  grid grid-cols-2 gap-4">
-            {data?.map((product) => (
+            {(data as product[]).map((product) => (
               <Fragment key={product.id}>
                 <a href={`/product/${product.id}`} className={styles.card}>
                 <div className="flex flex-col h-full place-content-between ">
@@ -36,7 +42,7 @@ const Home: NextPage = () => {
                     <div className="aspect-w-1 aspect-h-1  ">
                     <img
                         src={product?.image}
-                        alt={product?.image?.alt}
+                        // alt={product?.image?.alt}
                         className="h-full w-full  object-center sm:rounded-lg"
                     />
                     </div>
